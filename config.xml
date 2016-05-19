@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+	<host>localhost</host>
+	<port>8080</port>
+	<rootPath>/home/abanoub/nodejs/server/www/</rootPath>
+	<log>
+		<path>/home/abanoub/nodejs/server/log/</path>
+		<maxSize>20</maxSize>
+		<level>5</level>
+	</log>
+	<database>
+		<host>localhost</host>
+		<dbname>nodejs</dbname>
+		<username>root</username>
+		<password>1234</password>
+	</database>
+</server>
