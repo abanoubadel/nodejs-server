@@ -1,11 +1,23 @@
+/*
+	@name: Database Module
+	@description: Establish connection with MySql database.
+	@author: abanoub adel [abanoub.adel@spimesenselabs.com]
+*/
 var mysql = require('mysql');
+/* _conf is a global variable */
+var CONFIGURATION = _conf;
 
-var createConnection = function createConnection(config){
+/*
+	@author: abanoub adel [abanoub.adel@spimesenselabs.com]
+	@description: Create connection with database credentials, return connection object. 
+	@return: MySql connection object
+*/
+var createConnection = function createConnection() {
 	return mysql.createConnection({
-	  host     : config.database.host,
-	  user     : config.database.username,
-	  password : config.database.password,
-	  database : config.database.dbname
+		host: CONFIGURATION.database.host,
+		user: CONFIGURATION.database.username,
+		password: CONFIGURATION.database.password,
+		database: CONFIGURATION.database.dbname
 	});
 };
 

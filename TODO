@@ -1,0 +1,5 @@
+- fix log algorithm
+- compress old log file
+- post, put, delete, get
+- document code 80%
+- memory array

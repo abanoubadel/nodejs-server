@@ -5,7 +5,7 @@
 	<rootPath>/home/abanoub/nodejs/server/www/</rootPath>
 	<log>
 		<path>/home/abanoub/nodejs/server/log/</path>
-		<maxSize>20</maxSize>
+		<maxSize>200</maxSize>
 		<level>5</level>
 	</log>
 	<database>
