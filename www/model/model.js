@@ -13,6 +13,28 @@ var self = module.exports = {
 	fields: [],
 	/* model database table name */
 	table: null,
+	findById: function findById(id) {
+		var db = database.createConnection();
+		var sqlObject = db.query(`SELECT * from ${self.table} where id = ${id}`, function(error, rows, fields) {
+			logger.log('debug', sqlObject.sql);
+
+			if (error) {
+				logger.log('error', 'Error executing sql statment ' + error);
+				helper.loadErrorPage(response, 500, 'Internal server error');
+				return false;
+			}
+
+			logger.log('trace', JSON.stringify(rows));
+
+			db.end();
+			if (rows.length > 0) {
+				mysqlQuery.emit('query', rows[0]);
+			} else {
+				mysqlQuery.emit('error', new Error('Page not found!'));
+			}
+		});
+		return mysqlQuery;
+	},
 	/*
 		@author: abanoub adel [abanoub.adel@spimesenselabs.com]
 		@description: Perform Select * query to model table, fires query event when success

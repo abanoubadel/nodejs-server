@@ -75,7 +75,10 @@ module.exports = {
 							// log file exist, let's check it's size
 							// console.log(stats);
 							if (stats.size >= (CONFIGURATION.log.maxSize * 1024)) {
-								// current log file exceded limit, lets generate new log filename
+								// current log file exceded limit, let's compress it
+								var gzipme = require('gzipme');
+								gzipme(CONFIGURATION.log.path + file);
+								// generate new log filename
 								file = 'log.' + (Number(file.split(".")[1]) + 1);
 								// write new log filename to the hidden file '.log'
 								fs.writeFile(CONFIGURATION.log.path + '.log', file, {

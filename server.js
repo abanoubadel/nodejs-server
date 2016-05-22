@@ -13,7 +13,7 @@ var helper = null;
 	Configuration event: fires when config.xml file loaded
 	check config.js for more details
 */
-configuration.on('loaded', function(CONFIGURATION) {
+configuration.once('loaded', function(CONFIGURATION) {
 	/* set global configuration */
 	global._conf = CONFIGURATION;
 
@@ -23,9 +23,21 @@ configuration.on('loaded', function(CONFIGURATION) {
 	logger.log('debug', 'Configuration file loaded ');
 	logger.log('trace', 'config.xml ' + JSON.stringify(CONFIGURATION));
 
+	/*
+		Load memory array
+	 */
+	var memoryArray = require('./memoryarray')
+
+	memoryArray.load().once('loaded', function(data) {
+		/* memory array has been loaded */
+		logger.log('debug', 'Memory Array loaded ');
+		logger.log('trace', util.inspect(data));
+	});
+
 	http.createServer(function(request, response) {
 		/* get requested url */
 		var requestedUrl = url.parse(request.url);
+		var pathName = requestedUrl.pathname
 
 		/* construct corresponding route file path */
 		var fileAbsolutePath = CONFIGURATION.rootPath + requestedUrl.pathname;
@@ -54,10 +66,17 @@ configuration.on('loaded', function(CONFIGURATION) {
 			return;
 		}
 		/* 
+			if requested url has '/' at the end, remove it.
+		*/
+
+		if (pathName.charAt(pathName.length - 1) == '/') {
+			pathName = pathName.substring(0, pathName.length - 1);
+		}
+		/* 
 			map requested url to file through routes object
 			check routes.js for more details 
 		*/
-		var route = routes[requestedUrl.pathname];
+		var route = routes[pathName];
 
 		logger.log('info', request.method + ' request from ' + request.connection.remoteAddress + ' to ' + request.url);
 

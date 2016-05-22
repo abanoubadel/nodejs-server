@@ -4,12 +4,30 @@ var model = require('../model/users');
 
 var index = function index(response, request) {
 	var get = ws.GET(request);
-	model.findAll().once('query', function(users) {
-		helper.render(response, 'users', 'index', {
-			'pageTitle': 'Users Page',
-			'users': users
+	console.log(get);
+	if (get.hasOwnProperty('id') && get['id'] >= 0) {
+		var findUser = model.findById(get['id']);
+
+		findUser.once('query', function(user) {
+			console.log(user);
+			helper.render(response, 'users', 'user', {
+				'pageTitle': 'User Page',
+				'user': user
+			});
 		});
-	});
+
+		findUser.once('error', function(error) {
+			helper.loadErrorPage(response, 404, error.message);
+		});
+
+	} else {
+		model.findAll().once('query', function(users) {
+			helper.render(response, 'users', 'index', {
+				'pageTitle': 'Users Page',
+				'users': users
+			});
+		});
+	}
 };
 
 var create = function create(response, request) {
